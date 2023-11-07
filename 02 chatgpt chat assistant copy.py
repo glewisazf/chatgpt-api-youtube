@@ -1,18 +1,29 @@
+import os
+
 import openai
+import json
 
-openai.api_key = "####"
+openai.api_key = "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"
 
-messages = []
-system_msg = input("What type of chatbot would you like to create?\n")
-messages.append({"role": "system", "content": system_msg})
+message_history = []
 
-print("Your new assistant is ready!")
-while input != "quit()":
-    message = input()
-    messages.append({"role": "user", "content": message})
-    response = openai.ChatCompletion.create(
+
+def chat(inp, role="user"):
+    message_history.append({"role": "user", "content": inp})
+    completion = openai.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=messages)
-    reply = response["choices"][0]["message"]["content"]
-    messages.append({"role": "assistant", "content": reply})
-    print("\n" + reply + "\n")
+        messages=message_history
+    )
+
+    reply_content = completion.choices[0].message.content
+    print(reply_content)
+    message_history.append({"role": "assistant", "content": reply_content})
+    return reply_content
+
+
+for i in range(2):
+    user_input = input(">: ")
+    print("User input was", user_input)
+    print()
+    chat(user_input)
+    print()
