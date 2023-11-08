@@ -5,7 +5,7 @@ import json
 
 openai.api_key = "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"
 
-message_history = []
+message_history = [{"role": "system", "content": "Limit responses to 2 sentences."}]
 
 
 def chat(inp, role="user"):
@@ -14,7 +14,6 @@ def chat(inp, role="user"):
         model="gpt-3.5-turbo",
         messages=message_history
     )
-
     reply_content = completion.choices[0].message.content
     print(reply_content)
     message_history.append({"role": "assistant", "content": reply_content})
@@ -27,3 +26,4 @@ for i in range(2):
     print()
     chat(user_input)
     print()
+
